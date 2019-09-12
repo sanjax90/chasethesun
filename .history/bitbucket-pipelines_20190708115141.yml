@@ -1,0 +1,36 @@
+image: abuffa/dreamforce:latest
+
+pipelines:
+  
+  branches:
+    master:
+       - step:
+          name:  Authorize the org
+          script:
+           - sfdx force:auth:jwt:grant --username $USERNAME_1 --jwtkeyfile bin/server.key --clientid $CLIENTID_1 --setdefaultdevhubusername --setalias nmad --instanceurl https://login.salesforce.com/
+       - step:
+          name: Validate the package in master branch
+          script:
+           - sfdx force:auth:jwt:grant --username $USERNAME_1 --jwtkeyfile bin/server.key --clientid $CLIENTID_1 --setdefaultdevhubusername --setalias nmad --instanceurl https://login.salesforce.com/
+           - sfdx force:mdapi:deploy -c -d force-app/main/default -u $USERNAME_1 -w 20 
+       - step:
+          name: Deploy the package in master branch
+          script: 
+           - sfdx force:auth:jwt:grant --username $USERNAME_1 --jwtkeyfile bin/server.key --clientid $CLIENTID_1 --setdefaultdevhubusername --setalias nmad --instanceurl https://login.salesforce.com/
+           - sfdx force:mdapi:deploy -d force-app/main/default -u $USERNAME_1 -w 20 
+
+    feature/Feature_User_Story:
+       - step:
+          name:  Authorize the org
+          script:
+           - sfdx force:auth:jwt:grant --username $USERNAME_1 --jwtkeyfile bin/server.key --clientid $CLIENTID_1 --setdefaultdevhubusername --setalias nmad --instanceurl https://login.salesforce.com/
+       - step:
+          name: Validate the package in feature branch
+          script:
+           - sfdx force:auth:jwt:grant --username $USERNAME_1 --jwtkeyfile bin/server.key --clientid $CLIENTID_1 --setdefaultdevhubusername --setalias nmad --instanceurl https://login.salesforce.com/
+           - sfdx force:mdapi:deploy -c -d force-app/main/default -u $USERNAME_1 -w 20 
+       - step:
+          name: Deploy the package in feature branch
+          script: 
+           - sfdx force:auth:jwt:grant --username $USERNAME_1 --jwtkeyfile bin/server.key --clientid $CLIENTID_1 --setdefaultdevhubusername --setalias nmad --instanceurl https://login.salesforce.com/
+           - sfdx force:mdapi:deploy -d force-app/main/default -u $USERNAME_1 -w 20 
